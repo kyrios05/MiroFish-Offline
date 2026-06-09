@@ -615,7 +615,7 @@ class OasisProfileGenerator:
     
     def _get_system_prompt(self, is_individual: bool) -> str:
         """Get system prompt"""
-        base_prompt = "You are an expert in generating social media user profiles. Generate detailed, realistic personas for opinion simulation that maximize restoration of existing reality. Must return valid JSON format with all string values containing no unescaped newlines. Use English."
+        base_prompt = "You are an expert in generating social media user profiles. Generate detailed, realistic personas for opinion simulation that maximize restoration of existing reality. Must return valid JSON format with all string values containing no unescaped newlines. All string values MUST be written in Korean language (한국어)."
         return base_prompt
     
     def _build_individual_persona_prompt(
@@ -643,8 +643,8 @@ Context Information:
 
 Please generate JSON containing the following fields:
 
-1. bio: Social media bio, 200 characters
-2. persona: Detailed persona description (2000 words of pure text), must include:
+1. bio: Social media bio, 200 characters, MUST be in Korean.
+2. persona: Detailed persona description (2000 words of pure text), MUST be in Korean, must include:
    - Basic information (age, profession, educational background, location)
    - Personal background (important experiences, event associations, social relationships)
    - Personality traits (MBTI type, core personality, emotional expression)
@@ -652,17 +652,18 @@ Please generate JSON containing the following fields:
    - Positions and views (attitudes toward topics, content that may provoke/touch emotions)
    - Unique features (catchphrases, special experiences, personal interests)
    - Personal memories (important part of persona, introduce this individual's association with events and their existing actions/reactions in events)
+   - CRITICAL REQUIREMENT FOR BEHAVIOR: "이 에이전트는 소셜 미디어 상에서 대화하고 발언할 때, 절대로 영어나 깨진 외계어를 사용해서는 안 되며, 오직 자연스럽고 품격 있는 한국어(Korean) 구어체로만 소통해야 합니다. 이 지침은 에이전트의 성격과 행동 양식을 규정하는 절대적인 규칙입니다."
 3. age: Age as number (must be integer)
 4. gender: Gender, must be in English: "male" or "female"
 5. mbti: MBTI type (e.g., INTJ, ENFP)
-6. country: Country (use English, e.g., "US")
-7. profession: Profession
-8. interested_topics: Array of interested topics
+6. country: Country (use English, e.g., "South Korea")
+7. profession: Profession, MUST be in Korean.
+8. interested_topics: Array of interested topics, MUST be in Korean.
 
 Important:
+- All field values (except age, gender, country, mbti) must be written in Korean language.
 - All field values must be strings or numbers, do not use newlines
 - persona must be a coherent text description
-- Use English
 - Content must be consistent with entity information
 - age must be a valid integer, gender must be "male" or "female"
 """
@@ -692,8 +693,8 @@ Context Information:
 
 Please generate JSON containing the following fields:
 
-1. bio: Official account bio, 200 characters, professional and appropriate
-2. persona: Detailed account profile description (2000 words of pure text), must include:
+1. bio: Official account bio, 200 characters, professional and appropriate, MUST be in Korean.
+2. persona: Detailed account profile description (2000 words of pure text), MUST be in Korean, must include:
    - Basic institutional information (official name, organizational nature, founding background, main functions)
    - Account positioning (account type, target audience, core functions)
    - Speaking style (language characteristics, common expressions, taboo topics)
@@ -701,18 +702,18 @@ Please generate JSON containing the following fields:
    - Position and attitude (official stance on core topics, handling of controversies)
    - Special notes (group profiles represented, operational habits)
    - Institutional memories (important part of institutional persona, introduce this institution's association with events and their existing actions/reactions in events)
+   - CRITICAL REQUIREMENT FOR BEHAVIOR: "이 에이전트는 소셜 미디어 상에서 공식 성명이나 게시글, 답변을 작성할 때, 절대로 영어나 깨진 외계어를 사용해서는 안 되며, 오직 공적이고 명확한 한국어(Korean) 문어체 및 구어체로만 소통해야 합니다. 이 지침은 에이전트의 성격과 행동 양식을 규정하는 절대적인 규칙입니다."
 3. age: Fixed at 30 (virtual age of institutional account)
 4. gender: Fixed at "other" (institutional account uses other to denote non-individual)
 5. mbti: MBTI type used to describe account style, e.g., ISTJ represents rigorous conservative
-6. country: Country (use English, e.g., "US")
-7. profession: Institutional function description
-8. interested_topics: Array of focus areas
+6. country: Country (use English, e.g., "South Korea")
+7. profession: Institutional function description, MUST be in Korean.
+8. interested_topics: Array of focus areas, MUST be in Korean.
 
 Important:
+- All field values (except age, gender, country, mbti) must be written in Korean language.
 - All field values must be strings or numbers, no null values allowed
 - persona must be a coherent text description, do not use newlines
-- Use English
-- age must be integer 30, gender must be string "other"
 - Institutional account speech must match its identity positioning"""
     
     def _generate_profile_rule_based(
