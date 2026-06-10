@@ -174,31 +174,16 @@ except ImportError as e:
     sys.exit(1)
 
 
-# Twitter available actions (INTERVIEW not included, INTERVIEW can only be triggered manually via ManualAction)
+# Twitter available actions (Only productive content creation actions allowed to maximize graph knowledge updates)
 TWITTER_ACTIONS = [
     ActionType.CREATE_POST,
-    ActionType.LIKE_POST,
-    ActionType.REPOST,
-    ActionType.FOLLOW,
-    ActionType.DO_NOTHING,
     ActionType.QUOTE_POST,
 ]
 
-# Reddit available actions (INTERVIEW not included, INTERVIEW can only be triggered manually via ManualAction)
+# Reddit available actions (Only productive content creation actions allowed to maximize graph knowledge updates)
 REDDIT_ACTIONS = [
-    ActionType.LIKE_POST,
-    ActionType.DISLIKE_POST,
     ActionType.CREATE_POST,
     ActionType.CREATE_COMMENT,
-    ActionType.LIKE_COMMENT,
-    ActionType.DISLIKE_COMMENT,
-    ActionType.SEARCH_POSTS,
-    ActionType.SEARCH_USER,
-    ActionType.TREND,
-    ActionType.REFRESH,
-    ActionType.DO_NOTHING,
-    ActionType.FOLLOW,
-    ActionType.MUTE,
 ]
 
 
