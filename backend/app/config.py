@@ -29,8 +29,10 @@ class Config:
 
     # LLM configuration (unified OpenAI format)
     LLM_API_KEY = os.environ.get('LLM_API_KEY')
-    LLM_BASE_URL = os.environ.get('LLM_BASE_URL', 'http://localhost:11434/v1')
-    LLM_MODEL_NAME = os.environ.get('LLM_MODEL_NAME', 'qwen2.5:32b')
+    LLM_BASE_URL = os.environ.get('LLM_BASE_URL', 'https://api.openai.com/v1')
+    LLM_MODEL_NAME = os.environ.get('LLM_MODEL_NAME', 'gpt-6.1-terra')
+
+    LLM_REASONING_EFFORT = os.environ.get('LLM_REASONING_EFFORT', 'high')
 
     # Neo4j configuration
     NEO4J_URI = os.environ.get('NEO4J_URI', 'bolt://localhost:7687')

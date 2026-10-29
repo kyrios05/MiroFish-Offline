@@ -19,6 +19,7 @@ from openai import OpenAI
 
 from ..config import Config
 from ..utils.logger import get_logger
+from ..utils.openai_chat_compat import create_chat_completion, extract_chat_completion_text
 from .entity_reader import EntityNode
 from ..storage import GraphStorage
 
@@ -471,7 +472,8 @@ class OasisProfileGenerator:
 
         for attempt in range(max_attempts):
             try:
-                response = self.client.chat.completions.create(
+                response = create_chat_completion(
+                    self.client,
                     model=self.model_name,
                     messages=[
                         {"role": "system", "content": self._get_system_prompt(is_individual)},
@@ -482,7 +484,7 @@ class OasisProfileGenerator:
                     # Don't set max_tokens, let LLM generate freely
                 )
 
-                content = response.choices[0].message.content
+                content = extract_chat_completion_text(response)
 
                 # Check if output was truncated (finish_reason is not 'stop')
                 finish_reason = response.choices[0].finish_reason
