@@ -1002,7 +1002,7 @@ def create_model(config: Dict[str, Any], use_boost: bool = False):
     
     # If model name is not in .env, use config as fallback
     if not llm_model:
-        llm_model = config.get("llm_model", "gpt-4o-mini")
+        llm_model = config.get("llm_model", "gpt-6.1-terra")
     
     # Set environment variables required by camel-ai
     if llm_api_key:
@@ -1016,17 +1016,8 @@ def create_model(config: Dict[str, Any], use_boost: bool = False):
     
     print(f"{config_label} model={llm_model}, base_url={llm_base_url[:40] if llm_base_url else 'default'}...")
     
-    # GPT reasoning with function tools requires Responses, or reasoning disabled
-    # on the Chat Completions endpoint used by CAMEL/OASIS.
-    model_config = {}
-    if llm_model.lower().startswith(("gpt-5", "gpt-6")):
-        model_config["reasoning_effort"] = "none"
-
-    return ModelFactory.create(
-        model_platform=ModelPlatformType.OPENAI,
-        model_type=llm_model,
-        model_config_dict=model_config,
-    )
+    from app.utils.responses_model import create_simulation_model
+    return create_simulation_model(llm_model, llm_api_key, llm_base_url)
 
 
 def get_active_agents_for_round(

@@ -440,7 +440,7 @@ class TwitterSimulationRunner:
         
         # If not in .env, use config as fallback
         if not llm_model:
-            llm_model = self.config.get("llm_model", "gpt-4o-mini")
+            llm_model = self.config.get("llm_model", "gpt-6.1-terra")
         
         # Set environment variables required by camel-ai
         if llm_api_key:
@@ -454,10 +454,8 @@ class TwitterSimulationRunner:
         
         print(f"LLM configuration: model={llm_model}, base_url={llm_base_url[:40] if llm_base_url else 'default'}...")
         
-        return ModelFactory.create(
-            model_platform=ModelPlatformType.OPENAI,
-            model_type=llm_model,
-        )
+        from app.utils.responses_model import create_simulation_model
+        return create_simulation_model(llm_model, llm_api_key, llm_base_url)
     
     def _get_active_agents_for_round(
         self, 
