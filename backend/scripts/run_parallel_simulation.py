@@ -1016,9 +1016,16 @@ def create_model(config: Dict[str, Any], use_boost: bool = False):
     
     print(f"{config_label} model={llm_model}, base_url={llm_base_url[:40] if llm_base_url else 'default'}...")
     
+    # GPT reasoning with function tools requires Responses, or reasoning disabled
+    # on the Chat Completions endpoint used by CAMEL/OASIS.
+    model_config = {}
+    if llm_model.lower().startswith(("gpt-5", "gpt-6")):
+        model_config["reasoning_effort"] = "none"
+
     return ModelFactory.create(
         model_platform=ModelPlatformType.OPENAI,
         model_type=llm_model,
+        model_config_dict=model_config,
     )
 
 
@@ -1191,10 +1198,14 @@ async def run_twitter_simulation(
             await result.env.step(initial_actions)
             log_info(f"Published {len(initial_actions)} initial posts")
     
+    # Initial posts are already logged as round 0. Advance the database cursor
+    # so the first LLM round cannot count those posts again as new actions.
+    _, last_rowid = fetch_new_actions_from_db(db_path, last_rowid, agent_names)
+
     # Log round 0 end
     if action_logger:
         action_logger.log_round_end(0, initial_action_count)
-    
+
     # Main simulation loop
     time_config = config.get("time_config", {})
     total_hours = time_config.get("total_simulation_hours", 72)
@@ -1390,10 +1401,14 @@ async def run_reddit_simulation(
             await result.env.step(initial_actions)
             log_info(f"Published {len(initial_actions)} initial posts")
     
+    # Initial posts are already logged as round 0. Advance the database cursor
+    # so the first LLM round cannot count those posts again as new actions.
+    _, last_rowid = fetch_new_actions_from_db(db_path, last_rowid, agent_names)
+
     # Log round 0 end
     if action_logger:
         action_logger.log_round_end(0, initial_action_count)
-    
+
     # Main simulation loop
     time_config = config.get("time_config", {})
     total_hours = time_config.get("total_simulation_hours", 72)
